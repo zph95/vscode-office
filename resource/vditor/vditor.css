@@ -1,4 +1,55 @@
-
+/*!
+ * Vditor v3.11.2 - A markdown editor written in TypeScript.
+ *
+ * MIT License
+ *
+ * Copyright (c) 2018-present B3log 开源, b3log.org
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ *
+ */
+/*!
+ * Vditor v3.11.2 - A markdown editor written in TypeScript.
+ *
+ * MIT License
+ *
+ * Copyright (c) 2018-present B3log 开源, b3log.org
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ *
+ */
 .vditor {
   --border-color: #d1d5da;
   --second-color: rgba(88, 96, 105, 0.36);
@@ -117,12 +168,6 @@
   animation-fill-mode: forwards;
   animation-timing-function: ease-in;
 }
-.vditor-tooltipped--hover::before,
-.vditor-tooltipped:hover::before,
-.vditor-tooltipped:active::before,
-.vditor-tooltipped:focus::before {
-  display: none !important;
-}
 .vditor-tooltipped__s::after,
 .vditor-tooltipped__se::after,
 .vditor-tooltipped__sw::after {
@@ -152,7 +197,7 @@
 .vditor-tooltipped__nw::after {
   right: 50%;
   bottom: 100%;
-  margin-bottom: -65px;
+  margin-bottom: 5px;
 }
 .vditor-tooltipped__n::before,
 .vditor-tooltipped__ne::before,
@@ -232,7 +277,9 @@
   z-index: 3;
   font-size: 14px;
   display: none;
-  user-select: none;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
   max-width: 320px;
   min-width: 80px;
   animation-duration: 0.15s;
@@ -308,7 +355,6 @@
   border-bottom: 1px solid var(--border-color);
   padding: 0 5px;
   line-height: 1;
-  flex-wrap: wrap;
 }
 .vditor-toolbar--pin {
   position: sticky;
@@ -442,11 +488,13 @@
   float: left;
   margin: 3px 0 0 3px;
 }
-.vditor-toolbar {
-  width: 95%;
-  display: flex;
-  justify-content: center;
-  box-sizing: border-box;
+@media screen and (max-width: 520px) {
+  .vditor-toolbar__item {
+    padding: 0 12px;
+  }
+  .vditor-panel--left.vditor-panel--arrow:before {
+    right: 17px;
+  }
 }
 @media (hover: hover) and (pointer: fine) {
   .vditor-toolbar__item .vditor-tooltipped:hover {
@@ -469,10 +517,6 @@
   border-radius: 3px;
   box-sizing: border-box;
   font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", "Hiragino Sans GB", "Microsoft Yahei", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", "Segoe UI Symbol", "Android Emoji", "EmojiSymbols";
-  background-color: var(--toolbar-background-color);
-}
-.vditor .vditor-copy {
-  z-index: auto;
 }
 .vditor--fullscreen {
   position: fixed;
@@ -556,7 +600,9 @@
   background-color: var(--count-background-color);
   border-radius: 3px;
   font-size: 12px;
-  user-select: none;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
   float: right;
   margin: 8px 3px 0 0;
 }
@@ -567,7 +613,9 @@
 .vditor-resize {
   padding: 3px 0;
   cursor: row-resize;
-  user-select: none;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
   position: absolute;
   width: 100%;
 }
@@ -660,7 +708,7 @@
   bottom: 0;
   display: flex;
   flex-direction: column;
-  z-index: 3;
+  z-index: 100;
 }
 .vditor-img__bar {
   border-bottom: 1px solid var(--border-color);
@@ -677,7 +725,9 @@
   align-items: center;
   cursor: pointer;
   margin-left: 24px;
-  user-select: none;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
   color: var(--toolbar-icon-color);
 }
 .vditor-img__btn:hover {
@@ -794,6 +844,9 @@
 }
 .vditor-reset li + li {
   margin-top: 0.25em;
+}
+.vditor-reset li p {
+  margin-top: 16px;
 }
 .vditor-reset audio {
   max-width: 100%;
@@ -954,6 +1007,8 @@
 .vditor-reset .language-mindmap,
 .vditor-reset .language-plantuml,
 .vditor-reset .language-mermaid,
+.vditor-reset .language-smiles,
+.vditor-reset .language-markmap,
 .vditor-reset .language-abc,
 .vditor-reset .language-flowchart,
 .vditor-reset .language-graphviz {
@@ -963,12 +1018,18 @@
   outline: none;
   cursor: context-menu;
 }
+.vditor-reset .language-math .katex-display > .katex > .katex-html > .tag {
+  display: inline-block;
+  font-size: 1.21rem;
+  right: 2px;
+}
 .vditor-reset .language-echarts,
 .vditor-reset .language-mindmap {
   overflow: hidden;
   height: 420px;
 }
 .vditor-reset .language-mermaid,
+.vditor-reset .language-markmap,
 .vditor-reset .language-flowchart,
 .vditor-reset .language-graphviz {
   text-align: center;
@@ -1058,11 +1119,13 @@
 .vditor-linenumber__rows {
   position: absolute;
   pointer-events: none;
-  top: 0.5em;
+  top: 1em;
   left: 0;
   width: 3em;
   /* works for line-numbers below 1000 lines */
-  user-select: none;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
   counter-reset: linenumber;
 }
 .vditor-linenumber__rows > span {
@@ -1191,7 +1254,9 @@
 }
 .vditor-toc {
   margin-bottom: 16px;
-  user-select: text;
+  -webkit-user-select: text;
+     -moz-user-select: text;
+          user-select: text;
   color: #4285f4;
 }
 .vditor-toc .vditor-outline__action {
@@ -1211,33 +1276,13 @@
   width: 0;
   height: 0;
 }
-
 .vditor-outline {
-  width: 240px;
+  width: 250px;
   border-right: 1px solid var(--border-color);
   background-color: var(--panel-background-color);
   display: none;
   overflow: auto;
 }
-
-@media (max-width: 1450px) {
-  .vditor-outline {
-    width: 210px;
-  }
-}
-
-@media (max-width: 1200px) {
-  .vditor-outline {
-    width: 180px;
-  }
-}
-
-@media (max-width: 992px) {
-  .vditor-outline {
-    width: 150px;
-  }
-}
-
 .vditor-outline--right {
   border-right: 0;
   border-left: 1px solid var(--border-color);
@@ -1263,6 +1308,7 @@
 .vditor-outline li > span > svg {
   height: 10px;
   width: 10px;
+  flex-shrink: 0;
 }
 .vditor-outline li > span:hover {
   color: var(--toolbar-icon-hover-color);
