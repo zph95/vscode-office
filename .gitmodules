@@ -1,3 +1,4 @@
 [submodule "vditor"]
 	path = vditor
-	url = https://github.com/Vanessa219/vditor
+	url = https://github.com/zph95/vditor
+	branch = change-mermaid
