@@ -1,54 +1,52 @@
-# 升级Vditor CDN加载的mermaid从8.8.0到11.12.1
+## 整体架构设计
 
-## Vditor CDN Mermaid升级方案
-
-### 方案1: 修改CDN加载路径（推荐）
-
-修改 `vditor/src/ts/markdown/mermaidRender.ts`，将CDN路径从vscode-vditor改为直接加载mermaid 11.12.1：
-
-```typescript
-// 当前代码：
-addScript(`${cdn}/dist/js/mermaid/mermaid.min.js`, "vditorMermaidScript")
-
-// 修改为：
-addScript(`https://unpkg.com/mermaid@11.12.1/dist/mermaid.min.js`, "vditorMermaidScript")
-```
-
-
-
+### 架构图
 
 ```mermaid
 graph TB
-    subgraph "mio 0.6.23 (问题版本)"
-        A1[Poll::new] --> A2[poll.register]
-        A2 --> A3[事件处理]
-        A3 --> A4[poll.deregister]
-        A4 -.->|可能失败| A5[资源泄漏]
-        A5 --> A6[FD计数增长]
-        A6 --> A7[EMFILE错误]
-        
-        style A5 fill:#FFB6C1
-        style A6 fill:#FFB6C1
-        style A7 fill:#FF6B6B
+    subgraph DATA["数据源层"]
+        TICK[Tick数据源<br/>TradeEvent流]
     end
-    
-    subgraph "mio 0.8.12 (修复版本)"
-        B1[Poll::new] --> B2[registry.register]
-        B2 --> B3[事件处理]
-        B3 --> B4[registry.deregister]
-        B4 --> B5[正确资源清理]
-        B5 --> B6[FD计数稳定]
-        B6 --> B7[长期稳定运行]
-        
-        style B5 fill:#90EE90
-        style B6 fill:#90EE90
-        style B7 fill:#98FB98
+  
+    subgraph AGG["K线聚合引擎层"]
+        AGG1[KlineAggregator<br/>时间窗口聚合]
+        AGG2[OHLCV计算引擎]
+        AGG3[多时间间隔处理]
     end
-    
-    C[升级决策] --> A1
-    C --> B1
-    C --> D[API适配]
-    D --> E[features: tcp,udp → net]
-    D --> F[Ready::readable → Interest::READABLE]
-    D --> G[PollOpt → 简化API]
+  
+    subgraph MSG["消息路由层"]
+        REDIS[Redis Pub/Sub<br/>kline:*频道]
+    end
+  
+    subgraph NETTY["Netty WebSocket服务层"]
+        NETTY1[Netty Server<br/>Boss Group]
+        NETTY2[Worker Group<br/>NIO线程池]
+        NETTY3[WebSocket Handler<br/>连接管理]
+        NETTY4[Redis订阅器<br/>消息分发]
+    end
+  
+    subgraph CLIENT["客户端层"]
+        C1[Web浏览器]
+        C2[移动App]
+        C3[API客户端]
+    end
+  
+    TICK --> AGG1
+    AGG1 --> AGG2
+    AGG2 --> AGG3
+    AGG3 --> REDIS
+  
+    REDIS --> NETTY4
+    NETTY4 --> NETTY3
+    NETTY1 --> NETTY2
+    NETTY2 --> NETTY3
+    NETTY3 --> C1
+    NETTY3 --> C2
+    NETTY3 --> C3
+  
+    style DATA fill:#e1f5ff
+    style AGG fill:#fff4e1
+    style MSG fill:#e8f5e9
+    style NETTY fill:#f3e5f5
+    style CLIENT fill:#fff9c4
 ```

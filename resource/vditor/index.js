@@ -23,7 +23,7 @@ handler.on("open", async (md) => {
   const editor = new Vditor('vditor', {
     value: md.content,
     _lutePath: md.rootPath + '/lute.min.js',
-    cdn: 'https://unpkg.com/vscode-vditor@3.8.19',
+    cdn: 'https://unpkg.com/vditor@3.11.2',
     height: document.documentElement.clientHeight,
     outline: {
       enable: config.openOutline,
